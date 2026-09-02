@@ -1,0 +1,1 @@
+This directory contains information about Emily Ing's portfolio.

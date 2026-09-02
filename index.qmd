@@ -1,0 +1,15 @@
+---
+title: "E155 Portfolio"
+image: images/headshot.jpeg
+about:
+    template: jolla
+    links:
+        - icon: linkedin
+          text: LinkedIn
+          href: https://www.linkedin.com/in/emilying523
+        - icon: github
+          text: Github
+          href: https://github.com/eing523
+---
+
+Emily Ing is a junior engineering major interested in mechanical, electrical, and civil engineering at [Harvey Mudd College](https://hmc.edu).
