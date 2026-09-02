@@ -1,8 +1,8 @@
 ---
-title: "Hello Quarto"
-description: "Welcome to my Quarto portfolio"
-author: "Josh Brake"
-date: "8/23/24"
+title: "Initial Reflections - Goals and Emotions"
+description: "When it comes to E155, I feel a bit nervous and excited at the same time. The nervousness comes from the workload and difficulty of the course, but I understand that the struggle is necessary in order to better my learning. The excitement comes from the fact that this course's skills will be useful to my future career as an engineer, regardless of what I desire to pursue. I'm also very excited about the open-ended final project, since I love to be creative. My goals for this course are to practice a growth mindset, to gain important skills in electrical engineering, and to create bonds with my peers over the class's work."
+author: "Emily Ing"
+date: "9/2/26"
 categories:
   - reflection
   - labreport

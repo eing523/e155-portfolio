@@ -9,6 +9,10 @@ website:
         text: Home
       - href: blog.qmd
         text: Blog
+      - href: indexlabs.qmd
+        text: Labs
+      - href: https://hmc-e155.github.io/ 
+        text: Resources
 
 format:
   html:
