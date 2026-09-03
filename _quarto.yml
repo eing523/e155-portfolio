@@ -9,7 +9,7 @@ website:
         text: Home
       - href: blog.qmd
         text: Blog
-      - href: indexlabs.qmd
+      - href: labs/index.qmd
         text: Labs
       - href: https://hmc-e155.github.io/ 
         text: Resources
