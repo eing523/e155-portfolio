@@ -1,1 +1,53 @@
 ## Lab 1: FPGA and MCU Setup and Testing
+
+---
+title: "Lab 1: FPGA and MCU Setup and Testing"
+---
+
+## Introduction
+
+Briefly explain what was done in this lab.
+
+[Your intro paragraph here — what board/tools you used and what the lab's overall goal was.]
+
+## Design and Testing Methodology
+
+Explain how you approached the design from a software and/or hardware standpoint, and how you tested it.
+
+[Describe your approach and how you verified it worked.]
+
+## Technical Documentation
+
+Link to your code repo, and include a block diagram / schematic if relevant.
+
+The source code for this lab can be found in [this GitHub repository](https://github.com/your-username/e155-lab1).
+
+### Block Diagram
+
+![](images/block-diagram.png)
+
+*Figure 1: Block diagram of the design.*
+
+### Schematic
+
+![](images/schematic.png)
+
+*Figure 2: Schematic of the physical circuit.*
+
+## Results and Discussion
+
+Did you accomplish all the prescribed tasks? Any shortcomings? How did it perform?
+
+[Your results discussion here.]
+
+## Conclusion
+
+Briefly summarize what was done, how it performed, and how many hours you spent.
+
+[Your conclusion + hours spent.]
+
+## AI Prototype Summary
+
+Include generated code, chat transcripts, and a reflection on how well it worked.
+
+[Your AI usage summary, if any.]
