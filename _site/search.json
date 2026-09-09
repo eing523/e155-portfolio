@@ -56,43 +56,43 @@
     "text": "Emily Ing is a junior engineering major interested in mechanical, electrical, and civil engineering at Harvey Mudd College."
   },
   {
-    "objectID": "labs/lab1/images/lab1.html#introduction",
-    "href": "labs/lab1/images/lab1.html#introduction",
+    "objectID": "labs/lab1/lab1.html#introduction",
+    "href": "labs/lab1/lab1.html#introduction",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Introduction",
     "text": "Introduction\nBriefly explain what was done in this lab.\n[Your intro paragraph here — what board/tools you used and what the lab’s overall goal was.]"
   },
   {
-    "objectID": "labs/lab1/images/lab1.html#design-and-testing-methodology",
-    "href": "labs/lab1/images/lab1.html#design-and-testing-methodology",
+    "objectID": "labs/lab1/lab1.html#design-and-testing-methodology",
+    "href": "labs/lab1/lab1.html#design-and-testing-methodology",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Design and Testing Methodology",
     "text": "Design and Testing Methodology\nExplain how you approached the design from a software and/or hardware standpoint, and how you tested it.\n[Describe your approach and how you verified it worked.]"
   },
   {
-    "objectID": "labs/lab1/images/lab1.html#technical-documentation",
-    "href": "labs/lab1/images/lab1.html#technical-documentation",
+    "objectID": "labs/lab1/lab1.html#technical-documentation",
+    "href": "labs/lab1/lab1.html#technical-documentation",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Technical Documentation",
     "text": "Technical Documentation\nLink to your code repo, and include a block diagram / schematic if relevant.\nThe source code for this lab can be found in this GitHub repository.\n\nBlock Diagram\n\nFigure 1: Block diagram of the design.\n\n\nSchematic\n\nFigure 2: Schematic of the physical circuit."
   },
   {
-    "objectID": "labs/lab1/images/lab1.html#results-and-discussion",
-    "href": "labs/lab1/images/lab1.html#results-and-discussion",
+    "objectID": "labs/lab1/lab1.html#results-and-discussion",
+    "href": "labs/lab1/lab1.html#results-and-discussion",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Results and Discussion",
     "text": "Results and Discussion\nDid you accomplish all the prescribed tasks? Any shortcomings? How did it perform?\n[Your results discussion here.]"
   },
   {
-    "objectID": "labs/lab1/images/lab1.html#conclusion",
-    "href": "labs/lab1/images/lab1.html#conclusion",
+    "objectID": "labs/lab1/lab1.html#conclusion",
+    "href": "labs/lab1/lab1.html#conclusion",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Conclusion",
     "text": "Conclusion\nBriefly summarize what was done, how it performed, and how many hours you spent.\n[Your conclusion + hours spent.]"
   },
   {
-    "objectID": "labs/lab1/images/lab1.html#ai-prototype-summary",
-    "href": "labs/lab1/images/lab1.html#ai-prototype-summary",
+    "objectID": "labs/lab1/lab1.html#ai-prototype-summary",
+    "href": "labs/lab1/lab1.html#ai-prototype-summary",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "AI Prototype Summary",
     "text": "AI Prototype Summary\nInclude generated code, chat transcripts, and a reflection on how well it worked.\n[Your AI usage summary, if any.]"
