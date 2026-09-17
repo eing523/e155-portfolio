@@ -12,4 +12,4 @@ about:
           href: https://github.com/eing523
 ---
 
-Emily Ing is a junior engineering major interested in mechanical, electrical, and civil engineering at [Harvey Mudd College](https://hmc.edu).
+Emily Ing is a junior engineering major interested in mechanical and electrical engineering at [Harvey Mudd College](https://hmc.edu).
