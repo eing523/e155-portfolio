@@ -86,58 +86,31 @@ We will choose the current to be 8 mA and we know our input voltage is 3.3 V. As
 
 ::: {.callout-note collapse="true"}
 ## Multiplexing functionality
-![](images/toptb_powermux1.png)
-![](images/toptb_powermux2.png)
-Figures 4 & 5: Simulation waveforms for the power multiplexer.
-
-![](images/toptb_switchmux1.png)
-![](images/toptb_switchmux2.png)
-Figures 6 & 7: Simulation waveforms for the switch multiplexer.
+![](images/toptb_muxfunction.png)
+Figure 4: Simulation waveforms for the multiplexing functionality for the power, switches, and 7-segment displays. 
 
 :::
-The waveforms in [Figure 4](images/toptb_powermux1.png), [Figure 5](images/toptb_powermux2.png), [Figure 6](images/toptb_switchmux1.png), and [Figure 7](images/toptb_switchmux2.png) show a successful testbench run for the power and switch multiplexers.
+The waveforms in [Figure 4](images/toptb_muxfunction.png) show a successful testbench run for the power, switches, and 7-segment displays.
 
 
 ::: {.callout-note collapse="true"}
 ## LED driving functionality
-![](images/toptb_led1.png)
-![](images/toptb_led2.png)
-![](images/toptb_led3.png)
-![](images/toptb_led4.png)
+![](images/toptb_ledfunction.png)
 
-Figures 8, 9, 10, 11: Simulation waveforms for the LED driving functionality.
+
+Figure 5: Simulation waveforms for the LED driving functionality.
 :::
-The waveforms in [Figure 8](images/toptb_led1.png), [Figure 9](images/toptb_led2.png), [Figure 10](images/toptb_led3.png), and [Figure 11](images/toptb_led4.png) show a successful testbench run for the LED driving functionality.
+The waveforms in [Figure 5](images/toptb_ledfunction.png) show a successful testbench run for the LED driving functionality.
 
 ##### Scanning Module Testbench Waveforms
 
 ::: {.callout-note collapse="true"}
-## Four output transitions
-![](images/scannertb_output1.png)
-![](images/scannertb_output2.png)
-![](images/scannertb_output3.png)
-![](images/scannertb_output4.png)
+## Waveforms
+![](images/scannertb.png)
 
-Figures 12, 13, 14, 15: Simulation waveforms for the four output transitions.
+Figure 6: Simulation waveforms for the scanner module's four output transitions, enable, and reset features.
 :::
-The waveforms in [Figure 12](images/scannertb_output1.png), [Figure 13](images/scannertb_output2.png), [Figure 14](images/scannertb_output3.png), and [Figure 15](images/scannertb_output4.png) show a successful testbench run for the four output transitions.
-
-::: {.callout-note collapse="true"}
-## Enable feature
-![](images/scannertb_enableoff.png)
-![](images/scannertb_enableon.png)
-
-Figures 16, 17: Simulation waveforms for the scanner module enable signal.
-:::
-The waveforms in [Figure 16](images/scannertb_enableoff.png) and [Figure 17](images/scannertb_enableon.png) show a successful testbench run for the scanner module enable signal.
-
-::: {.callout-note collapse="true"}
-## Reset feature
-![](images/scannertb_reset.png)
-
-Figure 18: Simulation waveforms for the scanner module reset signal.
-:::
-The waveforms in [Figure 18](images/scannertb_reset.png) show a successful testbench run for the scanner module reset signal.
+The waveforms in [Figure 6](images/scannertb.png) show a successful testbench run for the scanner module's four output transitions, enable, and reset features.
 
 Overall, due to the success of all testbenches, I can confidently say that the code works as intended. This is further verified by the fact that the hardware testing works exactly as expected.
 
