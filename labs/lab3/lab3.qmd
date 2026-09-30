@@ -1,1 +1,127 @@
 ## Lab 3: Keypad Scanner
+
+### Introduction TODO
+
+This lab builds on from the first lab by implementing a two-digit 7-segment display that can display hexadecimal digits from 0x0 to 0xF. In addition, the lab aims to allow a keypad to light up specific LEDs. Another goal is to make the LEDs blink at 2 Hz when the keypads are held down.
+
+### Design and Testing Methodology TODO
+I made 4 modules: a top module, counter module, 7-segment display logic module, and scanner module to better organize the code. The only new addition is the scanner module, which is used to scan the keypad inputs and light up the corresponding LEDs. The columns of the keypads are inputs and the rows are outputs.
+
+#### Testing the Design
+I used testbenches to test the design, which is explained in the Results and Discussion section.
+
+### Technical Documentation TODO
+
+The source code for this lab can be found in [this GitHub repository](https://github.com/eing523/e155-lab2).
+
+#### Block Diagram 
+
+::: {.callout-note collapse="true"}
+## Block Diagram
+
+![](images/blockdiagram.jpeg)
+
+Figure 1: Block diagram of the top module design.
+:::
+
+The block diagram in [Figure 1](images/blockdiagram.jpeg) demonstrates how the top module brings the counter, scanning, and 7-segment display modules together.
+
+#### Schematic
+
+::: {.callout-note collapse="true"}
+## Two-Digit 7-Segment Display Schematic
+![](images/sevensegschematic.jpeg)
+
+Figure 2: Schematic of the physical circuit (seven-segment display).
+:::
+
+The schematic in [Figure 2](images/sevensegschematic.jpeg) shows how the two-digit 7-segment display circuit is physically connected. To get the current-limiting resistor value of 150 $\Omega$, we use the equation from lecture:
+
+$$
+I_D=\frac{V_{DD}-V_{ON}-V_{transistor}}{R_S+R_D}
+$$
+
+We can assume $R_S$ to be negligible. From the datasheet, $V_{DD}$ = 3.3 V, $V_{ON}$ = 2.1 V, and $V_{transistor}$ = 0.25 V. We will choose a current $I_D$ of 8 mA since it falls in the ideal range, according to the datasheet and lecture.
+
+As a result, we get the resistor value of 118.75 $\Omega$. We will use a 150 $\Omega$ resistor in the schematic instead since it is the closest standard value available in the lab.
+
+To get the resistor value of 330 $\Omega$ for the transistors, we use the equation from lecture:
+
+$$
+i_b=\frac{V_{in}-0.7}{R_b}
+$$
+
+We will choose the current to be 8 mA and we know our input voltage is 3.3 V. As a result, we get the resistor value of 325 $\Omega$. We use a 330 $\Omega$ resistor in the schematic instead since it is the closest standard value available in the lab.
+
+::: {.callout-note collapse="true"}
+## Keypad Schematic
+![](images/keypadschematic.jpeg)
+
+Figure 3: Schematic of the physical circuit (keypad).
+:::
+
+The schematic in [Figure 3](images/keypadschematic.jpeg) shows how the keypad circuit is physically connected. To get the current-limiting resistor value of 150 $\Omega$, we use the equation from lecture:
+
+$$
+I_D=\frac{V_{DD}-V_{ON}}{R_S+R_D}
+$$
+
+We can assume $R_S$ to be negligible. From the datasheet, $V_{DD}$ = 3.3 V and $V_{ON}$ = 2.1 V. We will choose a current $I_D$ of 8 mA since it falls in the ideal range, according to the datasheet and lecture.
+
+As a result, we get the resistor value of 150 $\Omega$. However, in the schematic, we use a 330 $\Omega$ resistor instead so we can use a lower current (to be extra safe for safe operating limits).
+
+To get the resistor value of 330 $\Omega$ for the transistors, we use the equation from lecture:
+
+$$
+i_b=\frac{V_{in}-0.7}{R_b}
+$$
+
+We will choose the current to be 8 mA and we know our input voltage is 3.3 V. As a result, we get the resistor value of 325 $\Omega$. We use a 330 $\Omega$ resistor in the schematic instead since it is the closest standard value available in the lab.
+
+
+### Results and Discussion TODO
+
+#### Testbench Simulation
+##### Top Module Testbench Waveforms
+
+::: {.callout-note collapse="true"}
+## Multiplexing functionality
+![](images/toptb_muxfunction.png)
+Figure 4: Simulation waveforms for the multiplexing functionality for the power, switches, and 7-segment displays. 
+
+:::
+The waveforms in [Figure 4](images/toptb_muxfunction.png) show a successful testbench run for the power, switches, and 7-segment displays.
+
+
+::: {.callout-note collapse="true"}
+## LED driving functionality
+![](images/toptb_ledfunction.png)
+
+
+Figure 5: Simulation waveforms for the LED driving functionality.
+:::
+The waveforms in [Figure 5](images/toptb_ledfunction.png) show a successful testbench run for the LED driving functionality.
+
+##### Scanning Module Testbench Waveforms
+
+::: {.callout-note collapse="true"}
+## Waveforms
+![](images/scannertb.png)
+
+Figure 6: Simulation waveforms for the scanner module's four output transitions, enable, and reset features.
+:::
+The waveforms in [Figure 6](images/scannertb.png) show a successful testbench run for the scanner module's four output transitions, enable, and reset features.
+
+Overall, due to the success of all testbenches, I can confidently say that the code works as intended. This is further verified by the fact that the hardware testing works exactly as expected.
+
+### Conclusion TODO
+
+Using SystemVerilog and Lattice Radiant, I was able to create code that successfully allows us to control a 2-digit 7-segment display (showing hexadecimal digits) and turn on LEDs in accordance with the specified keypad input.
+
+The design meets all the requirements. Overall, the lab was a success!
+
+I spent a total of __ hours working on this lab.
+
+### AI Prototype Summary TODO
+
+I used Gemini to produce code. I think that the quality of the output is high because it is concise and well-structured. 
