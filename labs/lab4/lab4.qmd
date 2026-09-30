@@ -170,14 +170,14 @@ The source code for this lab can be found in [this GitHub repository](https://gi
 
 ::: {.callout-note collapse="true"}
 ## Speaker Schematic
-![](images/schematicnew.png)
+![](images/schematicnew.jpeg)
 
 Figure 1: Schematic of the physical circuit (speaker).
 :::
 
-The schematic in [Figure 1](images/schematicnew.png) shows how the speaker circuit is physically connected. We have a speaker connected to an LM386 amplifier circuit with proper use of capacitors, resistors, and a 10k potentiometer. This circuit aims to have a gain of 20, since this circuit is based off of the LM386 datasheet.
+The schematic in [Figure 1](images/schematicnew.jpeg) shows how the speaker circuit is physically connected. We have a speaker connected to an LM386 amplifier circuit with proper use of capacitors, resistors, and a 10k potentiometer. This circuit aims to have a gain of 20, since this circuit is based off of the LM386 datasheet.
 
-For the NUCLEO we have the power pin of the potentiometer connected to PB3, which is the LED_PIN (the speaker pin) on the microcontroller. See the [motherboard schematic](https://hmc-e155.github.io/assets/doc/E155%20FA22%20Development%20Board%20Schematic.pdf) for the PB3 location. This allows us to control the volume of the speaker output.
+For the STM32L432KC we have the power pin of the potentiometer connected to PB3, which is the LED_PIN (the speaker pin) on the microcontroller. See the [motherboard schematic](https://hmc-e155.github.io/assets/doc/E155%20FA22%20Development%20Board%20Schematic.pdf) for the PB3 location. This allows us to control the volume of the speaker output.
 
 
 ### Results and Discussion
