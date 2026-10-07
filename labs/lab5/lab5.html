@@ -74,6 +74,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -127,7 +156,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lab-5-interrupts" id="toc-lab-5-interrupts" class="nav-link active" data-scroll-target="#lab-5-interrupts">Lab 5: Interrupts</a></li>
+  <li><a href="#lab-5-interrupts" id="toc-lab-5-interrupts" class="nav-link active" data-scroll-target="#lab-5-interrupts">Lab 5: Interrupts</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -139,8 +176,125 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="lab-5-interrupts" class="level2">
 <h2 class="anchored" data-anchor-id="lab-5-interrupts">Lab 5: Interrupts</h2>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>This lab aims to use an MCU to determine the speed and direction of a motor by reading from a quadrature encoder using interrupts. Timer 2 is used with the interrupts.</p>
+</section>
+<section id="design-and-testing-methodology" class="level3">
+<h3 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h3>
+<p>A .c and .h file for the timer was created, and set up in a way such that one can call the timer functions easily. A main.h file exists to define pins and other constants. The button_interrupt.c file is the file that handles interrupts and outputs the angular velocity and direction of the motor in the debug terminal. Logic for deciding whether the motor is spinning clockwise or counterclockwise is also implemented in this file.</p>
+<p>I aimed for the ARR value of 10,000 so that the timer can count to 1s each time. Since the core clock is of 80 MHz, we simply solve for PSC in the equation</p>
+<p><span class="math display">\[
+10000 = \frac{80000000}{PSC+1}
+\]</span></p>
+<p>to get PSC = 7999.</p>
+<section id="how-raw-encoder-pulses-and-their-timing-are-converted-into-velocity-and-direction" class="level4">
+<h4 class="anchored" data-anchor-id="how-raw-encoder-pulses-and-their-timing-are-converted-into-velocity-and-direction">How raw encoder pulses and their timing are converted into velocity and direction</h4>
+<p>The encoders A and B were read as interrupts on their rising and falling edges. Due to this design, as a magnet passes through, it is counted four times (on the rising edges and falling edges of A and B). By the time 1s passes, we would record 4 times the number of pulses that passed in this amount of time, even though in reality one pulse passed.</p>
+<p>Now, we will find the velocity equation. Since a pulse occurs on each rotation the equation can start as pulse_count/PPR. However, this is not the final equation. As mentioned before, since the motor has a 408 pulse per rotation and we count 4 times the number of pulses, we would have to multiply 408 by 4 to get the actual number of rotations recorded by our MCU. Therefore, the equation for velocity is <span class="math display">\[
+velocity = \frac{pulse}{4*408}
+\]</span></p>
+<p>To find the direction the motor is spinning, we can determine cases in which the motor is spinning CCW or CW.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Logic for interrupts
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/interrupt.jpeg" class="img-fluid"></p>
+<p>Figure 1: Diagram showing the cases when A and B are interrupts, respectively.</p>
+</div>
+</div>
+</div>
+<p>Imagine an interrupt as recording the data at the moment in time for the selected signal when it is high.</p>
+<p>In Figure 1, we see that when A is an interrupt, we have A = 1, B = 0 for the CW direction, and B = 1, A = 1 for the CCW direction. The logic for this is that when A turns on, we see what the value of B is at that time. This helps us get the logic we need to determine the direction of the motor. This same principle can be applied to the scenario in which B is an interrupt.</p>
+</section>
+<section id="testing-the-design" class="level4">
+<h4 class="anchored" data-anchor-id="testing-the-design">Testing the Design</h4>
+<p>I tested the design by hooking the motor up to a DC power supply. I observed the speed the motor produced based on the DC power supply’s voltage, and verified that the code was printing out the correct direction of rotation by visually observing the motor’s rotation. I made sure to test low, medium, and high voltages to ensure that the speed calculation logic was consistent across all voltages. As expected, the speed increased with higher voltage and decreased with lower voltage.</p>
+</section>
+</section>
+<section id="technical-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h3>
+<p>The source code for this lab can be found in <a href="https://github.com/eing523/e155-lab5">this GitHub repository</a>.</p>
+<section id="schematic" class="level4">
+<h4 class="anchored" data-anchor-id="schematic">Schematic</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Motor Schematic
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/schematic.jpeg" class="img-fluid"></p>
+<p>Figure 2: Schematic of the physical circuit (motor).</p>
+</div>
+</div>
+</div>
+<p>The schematic in <a href="images/schematic.jpeg">Figure 2</a> shows how the motor circuit is physically connected. Note that switching the wires of the - and + pins will reverse the direction of the motor.</p>
+<p>For the STM32L432KC we have encoder A and encoder B’s signals connected to PA6 and PA9 respectively, which is the A_PIN and B_PIN on the microcontroller. See the <a href="https://hmc-e155.github.io/assets/doc/E155%20FA22%20Development%20Board%20Schematic.pdf">motherboard schematic</a> for these pin locations. The 5V pin provides the necessary power to the encoder.</p>
+</section>
+<section id="flowchart" class="level4">
+<h4 class="anchored" data-anchor-id="flowchart">Flowchart</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Flowchart of the main loop and interrupt handlers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/flowchart.png" class="img-fluid"></p>
+<p>Figure 3: Flowchart of the main loop and interrupt handlers.</p>
+</div>
+</div>
+</div>
+<p>The flowchart in <a href="images/flowchart.png">Figure 3</a> shows the flowchart of the main loop and interrupt handlers.</p>
+</section>
+</section>
+<section id="results-and-discussion" class="level3">
+<h3 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h3>
+<section id="comparing-the-performance-of-interrupts-to-manual-polling-at-high-speeds" class="level4">
+<h4 class="anchored" data-anchor-id="comparing-the-performance-of-interrupts-to-manual-polling-at-high-speeds">Comparing the performance of interrupts to manual polling at high speeds</h4>
+<p>Interrupts are better than manual polling at high speeds since you will never miss a rising and falling edge. If polling were used instead, the polling intervals could be slightly imprecise, leading to missed edges. Polling doesn’t guarantee that we sample at a rising or falling edge either, since we rely on the fact that the encoders are 90 degrees phase shifted. With polling, you could accidentally sample within the region of a signal rather than at the edges, leading to an incorrectly assumed direction.</p>
+<p>Additionally, using a motor of 408 PPR and maximum speed of 2.5 rev/s, a minimum polling frequency of 4080 Hz (samples/s) is necessary to accurately capture all pulses. This frequency comes from the equation: <span class="math display">\[
+2.5 = \frac{pulse}{4*408}
+\]</span></p>
+<p>However, with there being some slight variation in speed or PPR in real life, polling cannot guarantee that the measurement will be as accurate as using interrupts. Also, you would need to change the polling frequency as you change the motor speed in reality, which means that if you keep the same polling frequency of 4080 Hz, it will not capture the edges at other speeds.</p>
+<p>In conclusion, using interrupts are better than polling since they guarantee that you will capture all edges, and they are more flexible to changes in speed and PPR.</p>
+</section>
+<section id="motor-output" class="level4">
+<h4 class="anchored" data-anchor-id="motor-output">Motor output</h4>
+<p>When the motor’s speed changes, the message on the debug terminal updates accordingly. The same goes for the direction of the motor.</p>
+</section>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Using SEGGER and C, I was able to use interrupts and a timer in order to show how the motor’s speed and direction changes.</p>
+<p>The design meets all the requirements. Overall, the lab was a success!</p>
+<p>I spent a total of 10 hours working on this lab.</p>
+</section>
+<section id="ai-prototype-summary" class="level3">
+<h3 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h3>
+<p>I used Gemini for this exercise. When it ran, it told me that the optimal approach is using the hardware Timer Encoder Interface (TIM1 or TIM 2) rather than manual GPIO interrupts (which is what I did). Since it told me this, I was not able to get the code for the interrupt handlers. When I would request the AI to improve its solution, it would still circle back to the Timer Encoder Interface approach. I tried to implement the Timer Encoder Interface approach and it did not run. I tried to prompt the LLM to debug but it was still unsuccessful after multiple prompts. This exercise taught me that not everything the AI responds with is correct.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
