@@ -184,7 +184,7 @@ For the STM32L432KC we have the power pin of the potentiometer connected to PB3,
 
 #### Speaker output
 
-The speaker is able to play Fur Elise at the specified frequencies and durations. The output sound doesn't sound muffled or strange, indicating that the circuit is functioning correctly. Also, when I played my second chosen song (Zelda's lullaby), it also sounded clear and correct, further confirming that the circuit is working as intended.
+The speaker is able to play Fur Elise at the specified frequencies and durations. The output sound doesn't sound muffled or strange, indicating that the circuit is functioning correctly. Also, when I played my second chosen song (Zelda's Lullaby), it also sounded clear and correct, further confirming that the circuit is working as intended.
 
 ### Conclusion
 
