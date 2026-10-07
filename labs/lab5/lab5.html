@@ -191,7 +191,7 @@ window.Quarto = {
 <section id="how-raw-encoder-pulses-and-their-timing-are-converted-into-velocity-and-direction" class="level4">
 <h4 class="anchored" data-anchor-id="how-raw-encoder-pulses-and-their-timing-are-converted-into-velocity-and-direction">How raw encoder pulses and their timing are converted into velocity and direction</h4>
 <p>The encoders A and B were read as interrupts on their rising and falling edges. Due to this design, as a magnet passes through, it is counted four times (on the rising edges and falling edges of A and B). By the time 1s passes, we would record 4 times the number of pulses that passed in this amount of time, even though in reality one pulse passed.</p>
-<p>Now, we will find the velocity equation. Since a pulse occurs on each rotation the equation can start as pulse_count/PPR. However, this is not the final equation. As mentioned before, since the motor has a 408 pulse per rotation and we count 4 times the number of pulses, we would have to multiply 408 by 4 to get the actual number of rotations recorded by our MCU. Therefore, the equation for velocity is <span class="math display">\[
+<p>Now, we will find the velocity equation. Since a pulse occurs on each rotation the equation can start as pulse/PPR. However, this is not the final equation. As mentioned before, since the motor has a 408 pulse per rotation and we count 4 times the number of pulses, we would have to multiply 408 by 4 to get the actual number of rotations recorded by our MCU. Therefore, the equation for velocity is <span class="math display">\[
 velocity = \frac{pulse}{4*408}
 \]</span></p>
 <p>To find the direction the motor is spinning, we can determine cases in which the motor is spinning CCW or CW.</p>
