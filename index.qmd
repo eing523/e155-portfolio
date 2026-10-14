@@ -1,5 +1,5 @@
 ---
-title: "E155 Portfolio"
+title: "Microprocessor Systems: Design & Application Portfolio"
 image: images/headshot.jpeg
 about:
     template: jolla
