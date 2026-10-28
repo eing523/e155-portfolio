@@ -12,6 +12,6 @@ title: "Labs"
 
 ## [Lab 5: Interrupts](lab5/lab5.qmd)
 
-## Lab 6: The Internet of Things and Serial Peripheral Interface (To be added)
+## [Lab 6: The Internet of Things and Serial Peripheral Interface](lab6/lab6.qmd)
 
-## Lab 7: The Advanced Encryption Standard (To be added)
+## [Lab 7: The Advanced Encryption Standard](lab7/lab7.qmd)
