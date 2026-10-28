@@ -119,7 +119,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lab-7-the-advanced-encryption-standard" id="toc-lab-7-the-advanced-encryption-standard" class="nav-link active" data-scroll-target="#lab-7-the-advanced-encryption-standard">Lab 7: The Advanced Encryption Standard</a></li>
+  <li><a href="#lab-7-the-advanced-encryption-standard" id="toc-lab-7-the-advanced-encryption-standard" class="nav-link active" data-scroll-target="#lab-7-the-advanced-encryption-standard">Lab 7: The Advanced Encryption Standard</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -131,8 +139,205 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="lab-7-the-advanced-encryption-standard" class="level2">
 <h2 class="anchored" data-anchor-id="lab-7-the-advanced-encryption-standard">Lab 7: The Advanced Encryption Standard</h2>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>In this lab, I designed and implemented an interface to communicate between the FPGA and MCU. I had to implement the AES Standard algorithm, specifically the cipher and key expansion functions, in order to get this to work.</p>
+</section>
+<section id="design-and-testing-methodology" class="level3">
+<h3 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h3>
+<p>When it comes to designing, most of the time was spent thinking about how variables worked in the AES standard. The datasheet was very dense, so it took a long time to process everything and remember the terminology. After processing the datasheet, I implemented the cipher and key expansion functions in SystemVerilog. A lot of this was combinational logic, and also using an FSM to control how many times and when these functions run.</p>
+<section id="testing-the-design" class="level4">
+<h4 class="anchored" data-anchor-id="testing-the-design">Testing the Design</h4>
+<p>To test the design, I used testbenches and the Simulation Wizard. I tested all submodules under aes_core and also the spi module. All of them passed!</p>
+</section>
+</section>
+<section id="technical-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h3>
+<p>The source code for this lab can be found in <a href="https://github.com/eing523/e155-lab7">this GitHub repository</a>.</p>
+<section id="block-diagrams" class="level4">
+<h4 class="anchored" data-anchor-id="block-diagrams">Block Diagrams</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Top Module Block Diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/aes_top_blockdiagram.jpeg" class="img-fluid"></p>
+<p>Figure 1: Block diagram of the top module design.</p>
+</div>
+</div>
+</div>
+<p>The block diagram in <a href="images/aes_top_blockdiagram.jpeg">Figure 1</a> demonstrates how the top module brings the aes_core and aes_spi modules together.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>aes_core Module Block Diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/aes_core_blockdiagram.jpeg" class="img-fluid"></p>
+<p>Figure 2: Block diagram of the aes_core module.</p>
+</div>
+</div>
+</div>
+<p>The block diagram in <a href="images/aes_core_blockdiagram.jpeg">Figure 2</a> demonstrates the internal structure of the AES cipher module. Logic for keyexpansion, subbytes, shiftrows, mixcolumns, and addroundkey are all implemented in this module.</p>
+</section>
+</section>
+<section id="results-and-discussion" class="level3">
+<h3 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h3>
+<section id="testbenches" class="level4">
+<h4 class="anchored" data-anchor-id="testbenches">Testbenches</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Core module (AES Cipher and Keyexpansion) functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/aes_core_tb.png" class="img-fluid"> Figure 3: Simulation waveforms for the core module.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/aes_core_tb.png">Figure 3</a> show a successful testbench run for the core module functionality.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>SPI functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/aes_spi_tb.png" class="img-fluid"></p>
+<p>Figure 4: Simulation waveforms for the SPI functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/aes_spi_tb.png">Figure 4</a> show a successful testbench run for the SPI functionality.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Subbytes (sbox_sync) functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/aes_sbox_tb.png" class="img-fluid"></p>
+<p>Figure 5: Simulation waveforms for the sbox_sync functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/aes_sbox_tb.png">Figure 5</a> show a successful testbench run for the Subbtyes functionality. Subbytes is just instantiating sbox_sync 16 times, so just showing that sbox_sync works is enough to show that Subbytes is working.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Shiftrows functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/shiftrows_tb.png" class="img-fluid"></p>
+<p>Figure 6: Simulation waveforms for the Shiftrows functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/shiftrows_tb.png">Figure 6</a> show a successful testbench run for the Shiftrows functionality.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Mixcolumns functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/mixcolumns_tb.png" class="img-fluid"></p>
+<p>Figure 7: Simulation waveforms for the Mixcolumns functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/mixcolumns_tb.png">Figure 7</a> show a successful testbench run for the Mixcolumns functionality.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Keyexpansion functionality GET BETTER SCREENSHOT
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/keyexpansion_tb.png" class="img-fluid"></p>
+<p>Figure 8: Simulation waveforms for the Keyexpansion functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/keyexpansion_tb.png">Figure 8</a> show a successful testbench run for the Keyexpansion functionality.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Addroundkey functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/addroundkey_tb.png" class="img-fluid"></p>
+<p>Figure 9: Simulation waveforms for the Addroundkey functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/addroundkey_tb.png">Figure 9</a> show a successful testbench run for the Addroundkey functionality.</p>
+</section>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Using SystemVerilog and Lattice Radiant, I was able to create code that implements the AES encryption algorithm correctly. The FPGA and MCU are able to communicate by downloading both codes to the respective devices.</p>
+<p>One thing I would like to note is that all of my testbenches passed, but the hardware was not working. This is because the LED that indicates a failed communication blinked. This is very interesting to me because the hardware would work completely if the testbenches worked completely in previous labs. I couldn’t exactly figure out why this was happening. One guess is that it could be an issue with the timing in the FSM.</p>
+<p>The design meets all the proficiency requirements. Overall, the lab was a mostly a success!</p>
+<p>I spent a total of 30 hours working on this lab.</p>
+</section>
+<section id="ai-prototype-summary" class="level3">
+<h3 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h3>
+<p>I used Gemini for this exercise. I noticed for the first prompt, when I synthesized the design in Radiant, that it was a success; the warnings/errors thrown were only because I told it to assume that RotWord was already created (and my project didn’t have RotWord in it). This result was the same for the second prompt. The main differences between the two responses were that the first prompt’s response was much more simpler and easy to understand, while the second prompt’s response felt overwhelming and followed the prompted structure very closely. From this exercise, I learned that providing a rigid structure for the AI to follow can allow them to follow it very literally, rather than finding more optimal, simpler solutions.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
