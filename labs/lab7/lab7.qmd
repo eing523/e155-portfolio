@@ -88,13 +88,13 @@ Figure 7: Simulation waveforms for the Mixcolumns functionality.
 The waveforms in [Figure 7](images/mixcolumns_tb.png) show a successful testbench run for the Mixcolumns functionality.
 
 ::: {.callout-note collapse="true"}
-## Keyexpansion functionality GET BETTER SCREENSHOT
-![](images/keyexpansion_tb.png)
+## Keyexpansion functionality
+![](images/keyexpansion1_tb.png)
 
 
 Figure 8: Simulation waveforms for the Keyexpansion functionality.
 :::
-The waveforms in [Figure 8](images/keyexpansion_tb.png) show a successful testbench run for the Keyexpansion functionality.
+The waveforms in [Figure 8](images/keyexpansion1_tb.png) show a successful testbench run for the Keyexpansion functionality.
 
 ::: {.callout-note collapse="true"}
 ## Addroundkey functionality
