@@ -6,7 +6,7 @@ title: "Labs"
 
 ## [Lab 2: Multiplexed 7-Segment Display](lab2/lab2.qmd)
 
-## Lab 3: Keypad Scanner (To be added)
+## [Lab 3: Keypad Scanner](lab3/lab3.qmd)
 
 ## [Lab 4: Digital Audio](lab4/lab4.qmd)
 
