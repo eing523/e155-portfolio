@@ -74,35 +74,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -150,12 +121,12 @@ window.Quarto = {
   <ul>
   <li><a href="#lab-3-keypad-scanner" id="toc-lab-3-keypad-scanner" class="nav-link active" data-scroll-target="#lab-3-keypad-scanner">Lab 3: Keypad Scanner</a>
   <ul class="collapse">
-  <li><a href="#introduction-todo" id="toc-introduction-todo" class="nav-link" data-scroll-target="#introduction-todo">Introduction TODO</a></li>
-  <li><a href="#design-and-testing-methodology-todo" id="toc-design-and-testing-methodology-todo" class="nav-link" data-scroll-target="#design-and-testing-methodology-todo">Design and Testing Methodology TODO</a></li>
-  <li><a href="#technical-documentation-todo" id="toc-technical-documentation-todo" class="nav-link" data-scroll-target="#technical-documentation-todo">Technical Documentation TODO</a></li>
-  <li><a href="#results-and-discussion-todo" id="toc-results-and-discussion-todo" class="nav-link" data-scroll-target="#results-and-discussion-todo">Results and Discussion TODO</a></li>
-  <li><a href="#conclusion-todo" id="toc-conclusion-todo" class="nav-link" data-scroll-target="#conclusion-todo">Conclusion TODO</a></li>
-  <li><a href="#ai-prototype-summary-todo" id="toc-ai-prototype-summary-todo" class="nav-link" data-scroll-target="#ai-prototype-summary-todo">AI Prototype Summary TODO</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -168,74 +139,111 @@ window.Quarto = {
 
 <section id="lab-3-keypad-scanner" class="level2">
 <h2 class="anchored" data-anchor-id="lab-3-keypad-scanner">Lab 3: Keypad Scanner</h2>
-<section id="introduction-todo" class="level3">
-<h3 class="anchored" data-anchor-id="introduction-todo">Introduction TODO</h3>
-<p>This lab builds on from the first lab by implementing a two-digit 7-segment display that can display hexadecimal digits from 0x0 to 0xF. In addition, the lab aims to allow a keypad to light up specific LEDs. Another goal is to make the LEDs blink at 2 Hz when the keypads are held down.</p>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>In this lab, I used an FPGA to scan inputs from a keypad. I designed a circuit interface to read this matrix keypad, implemented a solution to deal with switch bouncing, and implemented digital design strategies to ensure appropriate behavior with a variety of different user inputs (for example, like two keys pressed at once).</p>
 </section>
-<section id="design-and-testing-methodology-todo" class="level3">
-<h3 class="anchored" data-anchor-id="design-and-testing-methodology-todo">Design and Testing Methodology TODO</h3>
-<p>I made 4 modules: a top module, counter module, 7-segment display logic module, and scanner module to better organize the code. The only new addition is the scanner module, which is used to scan the keypad inputs and light up the corresponding LEDs. The columns of the keypads are inputs and the rows are outputs.</p>
-<section id="testing-the-design" class="level4">
-<h4 class="anchored" data-anchor-id="testing-the-design">Testing the Design</h4>
-<p>I used testbenches to test the design, which is explained in the Results and Discussion section.</p>
-</section>
-</section>
-<section id="technical-documentation-todo" class="level3">
-<h3 class="anchored" data-anchor-id="technical-documentation-todo">Technical Documentation TODO</h3>
-<p>The source code for this lab can be found in <a href="https://github.com/eing523/e155-lab2">this GitHub repository</a>.</p>
-<section id="block-diagram" class="level4">
-<h4 class="anchored" data-anchor-id="block-diagram">Block Diagram</h4>
+<section id="design-and-testing-methodology" class="level3">
+<h3 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h3>
+<p>I made a variety of different modules in order to implement the keypad scanning functionality. The columns of the keypads are inputs and the rows are outputs. Two main FSMs were implemented in order to get the keypad functionality to truly work: the debouncer FSM and the scanning FSM.</p>
+<section id="state-transition-diagrams-and-tables" class="level4">
+<h4 class="anchored" data-anchor-id="state-transition-diagrams-and-tables">State transition diagrams and tables</h4>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Block Diagram
+<span class="screen-reader-only">Note</span>FSMs
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><img src="images/blockdiagram.jpeg" class="img-fluid"></p>
-<p>Figure 1: Block diagram of the top module design.</p>
+<p><img src="images/fsms.jpeg" class="img-fluid"></p>
+<p>Figure 1: State transition diagrams for the FSMs.</p>
 </div>
 </div>
 </div>
-<p>The block diagram in <a href="images/blockdiagram.jpeg">Figure 1</a> demonstrates how the top module brings the counter, scanning, and 7-segment display modules together.</p>
 </section>
-<section id="schematic" class="level4">
-<h4 class="anchored" data-anchor-id="schematic">Schematic</h4>
+<section id="fsm-partitioning-switch-debouncing-strategy-and-tradeoffs" class="level4">
+<h4 class="anchored" data-anchor-id="fsm-partitioning-switch-debouncing-strategy-and-tradeoffs">FSM Partitioning, Switch Debouncing Strategy, and Tradeoffs</h4>
+<p>The debouncer FSM handles switch debouncing by checking to see if the pressed key stayed down for 10.9 ms, and if it does then the physical key press was actually a real press. Otherwise, the display will not be updated. The reason we need a debouncer FSM is to prevent false detections caused by switch bouncing, which can occur when a key is pressed or released. This FSM outputs a debounce_en signal, which indicates that at least one key is really pressed and that the switch is no longer bouncing. We don’t have to worry about filtering out super short clicks on accident, since physically any press would last longer than the switch bouncing period.</p>
+<p>By implementing this debounce FSM, the signals are clearly distinguished and only requires at most 3 states. Other designs could include less FSMs with more states, which can cause the state transitions to become more complex and harder to manage. It’s generally much easier to create something by breaking it into smaller pieces (more FSMs) rather than trying to do it in one go (less FSMs with more states).</p>
+<p>The scanner FSM works by checking to see if a key has been pressed. It relies on the debounce_en outputted from the debouncer FSM as part of this decision-making. If a press is detected (while also ensuring that a debounce has occurred), then the update will occur. This update will allow the value to be shown on the seven-segment display.</p>
+</section>
+<section id="testing-the-design" class="level4">
+<h4 class="anchored" data-anchor-id="testing-the-design">Testing the Design</h4>
+<p>I used testbenches to test the design, which is explained in the Results and Discussion section. I also tested the design on hardware by pressing a combination of buttons and visually observing the output on the seven-segment display.</p>
+</section>
+<section id="no-latches-and-no-tristate-buffers" class="level4">
+<h4 class="anchored" data-anchor-id="no-latches-and-no-tristate-buffers">No latches and no tristate buffers</h4>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Two-Digit 7-Segment Display Schematic
+<span class="screen-reader-only">Note</span>Output files
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><img src="images/sevensegschematic.jpeg" class="img-fluid"></p>
-<p>Figure 2: Schematic of the physical circuit (seven-segment display).</p>
+<p><img src="images/synthesizer_output_files.png" class="img-fluid"></p>
+<p>Figure 2: Synthesizer output files showing no latches and no tristate buffers.</p>
 </div>
 </div>
 </div>
-<p>The schematic in <a href="images/sevensegschematic.jpeg">Figure 2</a> shows how the two-digit 7-segment display circuit is physically connected. To get the current-limiting resistor value of 150 <span class="math inline">\(\Omega\)</span>, we use the equation from lecture:</p>
-<p><span class="math display">\[
-I_D=\frac{V_{DD}-V_{ON}-V_{transistor}}{R_S+R_D}
-\]</span></p>
-<p>We can assume <span class="math inline">\(R_S\)</span> to be negligible. From the datasheet, <span class="math inline">\(V_{DD}\)</span> = 3.3 V, <span class="math inline">\(V_{ON}\)</span> = 2.1 V, and <span class="math inline">\(V_{transistor}\)</span> = 0.25 V. We will choose a current <span class="math inline">\(I_D\)</span> of 8 mA since it falls in the ideal range, according to the datasheet and lecture.</p>
-<p>As a result, we get the resistor value of 118.75 <span class="math inline">\(\Omega\)</span>. We will use a 150 <span class="math inline">\(\Omega\)</span> resistor in the schematic instead since it is the closest standard value available in the lab.</p>
-<p>To get the resistor value of 330 <span class="math inline">\(\Omega\)</span> for the transistors, we use the equation from lecture:</p>
-<p><span class="math display">\[
-i_b=\frac{V_{in}-0.7}{R_b}
-\]</span></p>
-<p>We will choose the current to be 8 mA and we know our input voltage is 3.3 V. As a result, we get the resistor value of 325 <span class="math inline">\(\Omega\)</span>. We use a 330 <span class="math inline">\(\Omega\)</span> resistor in the schematic instead since it is the closest standard value available in the lab.</p>
+<p>The synthesizer output files in <a href="images/synthesizer_output_files.png">Figure 2</a> demonstrate that the design has no latches and no tristate buffers.</p>
+</section>
+</section>
+<section id="technical-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h3>
+<p>The source code for this lab can be found in <a href="https://github.com/eing523/e155-lab3">this GitHub repository</a>.</p>
+<section id="block-diagram" class="level4">
+<h4 class="anchored" data-anchor-id="block-diagram">Block Diagram</h4>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Top Module Block Diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/top_blockdiagram.jpeg" class="img-fluid"></p>
+<p>Figure 3: Block diagram of the top module design.</p>
+</div>
+</div>
+</div>
+<p>The block diagram in <a href="images/top_blockdiagram.jpeg">Figure 3</a> demonstrates how the top module brings all submodules, including the scanner FSM and debouncer FSM, together.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Press Value Module Block Diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/pressvalue_blockdiagram.jpeg" class="img-fluid"></p>
+<p>Figure 4: Block diagram of the press value module design.</p>
+</div>
+</div>
+</div>
+<p>The block diagram in <a href="images/pressvalue_blockdiagram.jpeg">Figure 4</a> demonstrates how the press value module works. This module tells us which value is being selected, and that value will be chosen to be displayed on the display.</p>
+</section>
+<section id="schematic" class="level4">
+<h4 class="anchored" data-anchor-id="schematic">Schematic</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -244,101 +252,196 @@ i_b=\frac{V_{in}-0.7}{R_b}
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><img src="images/keypadschematic.jpeg" class="img-fluid"></p>
-<p>Figure 3: Schematic of the physical circuit (keypad).</p>
-</div>
-</div>
-</div>
-<p>The schematic in <a href="images/keypadschematic.jpeg">Figure 3</a> shows how the keypad circuit is physically connected. To get the current-limiting resistor value of 150 <span class="math inline">\(\Omega\)</span>, we use the equation from lecture:</p>
-<p><span class="math display">\[
-I_D=\frac{V_{DD}-V_{ON}}{R_S+R_D}
-\]</span></p>
-<p>We can assume <span class="math inline">\(R_S\)</span> to be negligible. From the datasheet, <span class="math inline">\(V_{DD}\)</span> = 3.3 V and <span class="math inline">\(V_{ON}\)</span> = 2.1 V. We will choose a current <span class="math inline">\(I_D\)</span> of 8 mA since it falls in the ideal range, according to the datasheet and lecture.</p>
-<p>As a result, we get the resistor value of 150 <span class="math inline">\(\Omega\)</span>. However, in the schematic, we use a 330 <span class="math inline">\(\Omega\)</span> resistor instead so we can use a lower current (to be extra safe for safe operating limits).</p>
-<p>To get the resistor value of 330 <span class="math inline">\(\Omega\)</span> for the transistors, we use the equation from lecture:</p>
-<p><span class="math display">\[
-i_b=\frac{V_{in}-0.7}{R_b}
-\]</span></p>
-<p>We will choose the current to be 8 mA and we know our input voltage is 3.3 V. As a result, we get the resistor value of 325 <span class="math inline">\(\Omega\)</span>. We use a 330 <span class="math inline">\(\Omega\)</span> resistor in the schematic instead since it is the closest standard value available in the lab.</p>
-</section>
-</section>
-<section id="results-and-discussion-todo" class="level3">
-<h3 class="anchored" data-anchor-id="results-and-discussion-todo">Results and Discussion TODO</h3>
-<section id="testbench-simulation" class="level4">
-<h4 class="anchored" data-anchor-id="testbench-simulation">Testbench Simulation</h4>
-<section id="top-module-testbench-waveforms" class="level5">
-<h5 class="anchored" data-anchor-id="top-module-testbench-waveforms">Top Module Testbench Waveforms</h5>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Multiplexing functionality
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><img src="images/toptb_muxfunction.png" class="img-fluid"> Figure 4: Simulation waveforms for the multiplexing functionality for the power, switches, and 7-segment displays.</p>
-</div>
-</div>
-</div>
-<p>The waveforms in <a href="images/toptb_muxfunction.png">Figure 4</a> show a successful testbench run for the power, switches, and 7-segment displays.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>LED driving functionality
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><img src="images/toptb_ledfunction.png" class="img-fluid"></p>
-<p>Figure 5: Simulation waveforms for the LED driving functionality.</p>
+<p><img src="images/schematic.jpeg" class="img-fluid"></p>
+<p>Figure 5: Schematic of the physical circuit.</p>
 </div>
 </div>
 </div>
-<p>The waveforms in <a href="images/toptb_ledfunction.png">Figure 5</a> show a successful testbench run for the LED driving functionality.</p>
+<p>The schematic in <a href="images/schematic.jpeg">Figure 5</a> shows how the circuit is physically connected.</p>
+<p>The resistor values are the same as the ones used in Lab 2, found in the same manner.</p>
 </section>
-<section id="scanning-module-testbench-waveforms" class="level5">
-<h5 class="anchored" data-anchor-id="scanning-module-testbench-waveforms">Scanning Module Testbench Waveforms</h5>
+</section>
+<section id="results-and-discussion" class="level3">
+<h3 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h3>
+<section id="testbench-simulation" class="level4">
+<h4 class="anchored" data-anchor-id="testbench-simulation">Testbench Simulation</h4>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Waveforms
+<span class="screen-reader-only">Note</span>Top-level module functionality
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><img src="images/scannertb.png" class="img-fluid"></p>
-<p>Figure 6: Simulation waveforms for the scanner module’s four output transitions, enable, and reset features.</p>
+<p><img src="images/top_tb.png" class="img-fluid"> Figure 6: Simulation waveforms for the top level module functionality.</p>
 </div>
 </div>
 </div>
-<p>The waveforms in <a href="images/scannertb.png">Figure 6</a> show a successful testbench run for the scanner module’s four output transitions, enable, and reset features.</p>
+<p>The waveforms in <a href="images/top_tb.png">Figure 6</a> show a successful testbench run for the top level module.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Scanning FSM functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/scanfsm_tb.png" class="img-fluid"></p>
+<p>Figure 7: Simulation waveforms for the scanning FSM functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/scanfsm_tb.png">Figure 7</a> show a successful testbench run for the scanning FSM functionality.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Debouncer FSM functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/debouncer_tb.png" class="img-fluid"></p>
+<p>Figure 8: Simulation waveforms for the debouncer FSM functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/debouncer_tb.png">Figure 8</a> show a successful testbench run for the debouncer FSM functionality. The debouncer is used to prevent reading switch bounce.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Press value functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/pressvalue_tb.png" class="img-fluid"></p>
+<p>Figure 9: Simulation waveforms for the press value functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/pressvalue_tb.png">Figure 9</a> show a successful testbench run for the press value functionality.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Press logic functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/presslogic_tb.png" class="img-fluid"></p>
+<p>Figure 10: Simulation waveforms for the press logic functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/presslogic_tb.png">Figure 10</a> show a successful testbench run for the press logic functionality. This module allows us to determine what four column bits are associated with one row.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Scanning module functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/scanning_tb.png" class="img-fluid"></p>
+<p>Figure 11: Simulation waveforms for the scanning module functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/scanning_tb.png">Figure 11</a> show a successful testbench run for the scanning module functionality. The scanning module looks goes through each row of the keypad, checking for key presses and updating the corresponding signals accordingly.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Display module functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/display_tb.png" class="img-fluid"></p>
+<p>Figure 12: Simulation waveforms for the display module functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/display_tb.png">Figure 12</a> show a successful testbench run for the display module functionality. This module is used to keep track of which values are being displayed on the seven-segment display, including shifting the digits appropriately as new inputs come in.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Multiplexer module functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/mux_tb.png" class="img-fluid"></p>
+<p>Figure 13: Simulation waveforms for the multiplexer module functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/mux_tb.png">Figure 13</a> show a successful testbench run for the multiplexer module functionality. The mux is used to determine which digit lights up on the display on each clock tick, switching at a rate fast enough such that the human eye cannot see the flicker.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Synchronizer functionality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/synchronizer_tb.png" class="img-fluid"></p>
+<p>Figure 14: Simulation waveforms for the synchronizer functionality.</p>
+</div>
+</div>
+</div>
+<p>The waveforms in <a href="images/synchronizer_tb.png">Figure 14</a> show a successful testbench run for the synchronizer functionality. The synchronizer is used to handle metastability for the column input from the keypad. This module is also used on the rows output to ensure that the rows output gets the same two-tick delay as the columns.</p>
+<p>The counter and seven-segment display modules were tested succesfully in the previous lab, so please refer to that lab report for those testbench waveforms.</p>
 <p>Overall, due to the success of all testbenches, I can confidently say that the code works as intended. This is further verified by the fact that the hardware testing works exactly as expected.</p>
 </section>
 </section>
-</section>
-<section id="conclusion-todo" class="level3">
-<h3 class="anchored" data-anchor-id="conclusion-todo">Conclusion TODO</h3>
-<p>Using SystemVerilog and Lattice Radiant, I was able to create code that successfully allows us to control a 2-digit 7-segment display (showing hexadecimal digits) and turn on LEDs in accordance with the specified keypad input.</p>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Using SystemVerilog and Lattice Radiant, I was able to create code that successfully allows us to control a 2-digit 7-segment display (showing hexadecimal digits) using keypad inputs.</p>
 <p>The design meets all the requirements. Overall, the lab was a success!</p>
-<p>I spent a total of __ hours working on this lab.</p>
+<p>I spent a total of 40 hours working on this lab.</p>
 </section>
-<section id="ai-prototype-summary-todo" class="level3">
-<h3 class="anchored" data-anchor-id="ai-prototype-summary-todo">AI Prototype Summary TODO</h3>
-<p>I used Gemini to produce code. I think that the quality of the output is high because it is concise and well-structured.</p>
+<section id="ai-prototype-summary" class="level3">
+<h3 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h3>
+<p>I used Gemini to produce code. Given the first prompt, I copy-pasted the code it gave into Lattice Radiant. It didn’t synthesize on the first try, and when I gave the error message back to the AI, it found that there was a random stray line that contained the words “1 me”, which I found really weird (I wonder if the AI was getting confused as it was thinking of a response). After telling the AI to correct this error, I synthesized the code again and it was a success. For prompt 2, the code didn’t synthesize on the first try. The first error it threw up was because it was using an older tool (SB_HFOSC) that isn’t used in Lattice Radiant anymore. After this the code had no issues, except for the message that it was instantiating an unknown module sevenSegment. This is okay, though, since we explicitly told the LLM to assume that this module exists. So I would say that the code was a success after this one mistake.</p>
+<p>Overall, when it comes to comparing the two styles, they performed pretty similarly; the errors generated in Lattice Radiant were very minor and one was not significantly worse than the other. I think something to point out, though, is that there is a chance that the AI could produce more nonsense if faced with a monolithic prompt, just because there was a random “1 me” line that doesn’t make sense in any SystemVerilog context. To compare, the error generated from the modular prompts were more sensible, meaning that one could understand where this error was coming from.</p>
 
 
 </section>
